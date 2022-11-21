@@ -11,37 +11,36 @@
 
 struct MeasureCallback
 {
-  virtual YGSize measure(float width,
-      YGMeasureMode widthMode,
-      float height,
-      YGMeasureMode heightMode) = 0;
+  virtual ~MeasureCallback() {}
+
+  virtual YGSize measure(float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode) = 0;
 };
 
 struct MeasureCallbackWrapper : public emscripten::wrapper<MeasureCallback>
 {
   EMSCRIPTEN_WRAPPER(MeasureCallbackWrapper);
-  YGSize measure(float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode)
-  {
+
+  YGSize measure(float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode) {
     return call<YGSize>("measure", width, widthMode, height, heightMode);
   }
 };
 
-struct DirtiedCallback
-{
+struct DirtiedCallback {
+  virtual ~DirtiedCallback() {}
+
   virtual void dirtied() = 0;
 };
 
 struct DirtiedCallbackWrapper : public emscripten::wrapper<DirtiedCallback>
 {
   EMSCRIPTEN_WRAPPER(DirtiedCallbackWrapper);
-  void dirtied()
-  {
+
+  void dirtied() {
     return call<void>("dirtied");
   }
 };
 
 class Node {
-
 public:
   static Node* createDefault(void);
   static Node* createWithConfig(Config* config);

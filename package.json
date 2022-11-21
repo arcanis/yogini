@@ -1,23 +1,26 @@
 {
-  "name": "yoga-wasm-web",
-  "version": "0.2.0",
-  "main": "dist/index.js",
-  "types": "index.d.ts",
-  "typings": "index.d.ts",
-  "type": "module",
-  "scripts": {
-    "build": "make && node build.js"
-  },
-  "repository": "shuding/yoga-wasm-web",
+  "name": "yogini",
+  "version": "0.1.0",
+  "packageManager": "yarn@4.0.0-rc.30",
   "license": "MIT",
-  "files": [
-    "dist",
-    "package.json",
-    "index.d.ts",
-    "LICENSE"
-  ],
+  "main": "./dist/async.js",
+  "types": "./dist/async.d.ts",
+  "exports": {
+    ".": "./dist/async.js",
+    "./sync": "./dist/sync.js",
+    "./yoga.wasm": "./dist/yoga.wasm"
+  },
   "devDependencies": {
     "esbuild": "^0.14.18",
     "esbuild-plugin-flow": "^0.3.2"
-  }
+  },
+  "scripts": {
+    "prepack": "node ./build.js"
+  },
+  "dependencies": {
+    "fast-glob": "^3.2.12"
+  },
+  "files": [
+    "dist"
+  ]
 }
