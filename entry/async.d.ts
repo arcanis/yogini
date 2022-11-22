@@ -1,5 +1,5 @@
 import {ConstantsStatic, YogaConfig} from './yoga';
-export type * from './';
+export type * from './yoga';
 
 declare const mod: ConstantsStatic & {
     Config: {

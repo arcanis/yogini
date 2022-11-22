@@ -6,6 +6,8 @@ function mainSync() {
 
     const config = Yoga.Config.create(wasm);
     const node = config.createNode();
+
+    node.calculateLayout();
 }
 
 async function mainAsync() {
@@ -13,6 +15,8 @@ async function mainAsync() {
 
     const config = await Yoga.Config.create(wasm);
     const node = config.createNode();
+
+    node.calculateLayout();
 }
 
 mainSync();

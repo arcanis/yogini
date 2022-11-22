@@ -7,8 +7,8 @@
   return new Config();
 }
 
-/* static */ void Config::destroy(Config* node) {
-  delete node;
+/* static */ void Config::destroy(Config* config) {
+  delete config;
 }
 
 Config::Config(void) : m_config(YGConfigNew()) {}
@@ -31,8 +31,4 @@ bool Config::isExperimentalFeatureEnabled(int feature) const {
 
 Node* Config::createNode(void) {
   return new Node(this);
-}
-
-void Config::deleteNode(Node* node) {
-  delete node;
 }

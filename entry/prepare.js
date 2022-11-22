@@ -240,18 +240,13 @@ exports.prepare = (bind, lib) => {
     lib.Config.destroy(this);
   });
 
-  patch(lib.Node, 'create', (_, config) => {
-    // We decide the constructor we want to call depending on the parameters
-    return config ? lib.Node.createWithConfig(config) : lib.Node.createDefault();
-  });
-
-  patch(lib.Node.prototype, 'free', () => {
+  patch(lib.Node.prototype, 'free', function () {
     // Since we handle the memory allocation ourselves (via lib.Node.create),
     // we also need to handle the deallocation
     lib.Node.destroy(this);
   });
 
-  patch(lib.Node.prototype, 'freeRecursive', () => {
+  patch(lib.Node.prototype, 'freeRecursive', function () {
     for (let t = 0, T = this.getChildCount(); t < T; ++t)
       this.getChild(0).freeRecursive();
 
@@ -267,7 +262,7 @@ exports.prepare = (bind, lib) => {
     }));
   });
 
-  patch(lib.Node.prototype, 'calculateLayout', (original, width = NaN, height = NaN, direction = CONSTANTS.DIRECTION_LTR) => {
+  patch(lib.Node.prototype, 'calculateLayout', function (original, width = NaN, height = NaN, direction = CONSTANTS.DIRECTION_LTR) {
     // Just a small patch to add support for the function default parameters
     return original.call(this, width, height, direction);
   });

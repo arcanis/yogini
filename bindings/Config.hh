@@ -32,7 +32,6 @@ public: // Getters
 
 public:
   Node* createNode(void);
-  void deleteNode(Node* node);
 
 private:
   YGConfigRef m_config;

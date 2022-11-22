@@ -57,7 +57,7 @@ async function main() {
     throw new Error(`Expected the generated WASM file to be the same in sync / async modes`);
 
   await fs.promises.copyFile(
-    `./tmp/yoga-sync.wasm`,
+    `./dist/yoga-sync.wasm`,
     `./dist/yoga.wasm`,
   );
 

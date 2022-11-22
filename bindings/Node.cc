@@ -22,6 +22,10 @@ static void globalDirtiedFunc(YGNodeRef nodeRef) {
   return reinterpret_cast<Node*>(YGNodeGetContext(nodeRef));
 }
 
+/* static */ void Node::destroy(Node* node) {
+  delete node;
+}
+
 Node::Node(Config* config)
     : m_node(YGNodeNewWithConfig(config->m_config))
     , m_measureFunc(nullptr)

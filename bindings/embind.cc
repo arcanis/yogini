@@ -33,8 +33,8 @@ EMSCRIPTEN_BINDINGS(Config) {
   class_<Config>("Config")
     .constructor<>(&Config::create, allow_raw_pointers())
     .class_function<>("create", &Config::create, allow_raw_pointers())
+    .class_function<>("destroy", &Config::destroy, allow_raw_pointers())
     .function("createNode", &Config::createNode, allow_raw_pointers())
-    .function("deleteNode", &Config::deleteNode, allow_raw_pointers())
     .function("setExperimentalFeatureEnabled", &Config::setExperimentalFeatureEnabled)
     .function("isExperimentalFeatureEnabled", &Config::isExperimentalFeatureEnabled)
     .function("setPointScaleFactor", &Config::setPointScaleFactor)
@@ -73,6 +73,8 @@ EMSCRIPTEN_BINDINGS(Node) {
     ;
 
   class_<Node>("Node")
+    .class_function<>("destroy", &Config::destroy, allow_raw_pointers())
+
     .function("reset", &Node::reset)
 
     .function("copyStyle", &Node::copyStyle)
