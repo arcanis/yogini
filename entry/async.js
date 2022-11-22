@@ -1,16 +1,11 @@
+const setupModule = require(`../dist/yoga-async`);
+
 const {constants, prepare} = require(`./prepare`);
-const yoga = require(`../dist/yoga-async`);
 
-function bind(_, proto) {
-  return proto
-}
+module.exports = {...constants};
 
-module.exports = {
-  ...constants,
+module.exports.createContext = async wasmBinary => {
+  const lib = prepare(await setupModule({wasmBinary}));
 
-  Config: {
-    create: async wasmBinary => {
-      return prepare(bind, await yoga({wasmBinary})).Config.create();
-    },
-  },
+  return new lib.Config.create();
 };

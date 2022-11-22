@@ -1,7 +1,5 @@
 const {execFile} = require(`child_process`);
 const fs = require('fs');
-const {build} = require('esbuild');
-const flow = require('esbuild-plugin-flow');
 const glob = require('fast-glob');
 const {promisify} = require(`util`);
 
@@ -20,7 +18,7 @@ async function start(async) {
     ...await bindingSources,
 	  `--bind`,
 	  `-Iyoga`,
-	  `-g`,
+	  `-O3`,
 	  `-flto`,
 	  `-s`, `WASM=1`,
 	  `-s`, `WASM_ASYNC_COMPILATION=${async ? 1 : 0}`,

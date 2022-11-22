@@ -1,10 +1,7 @@
 import {ConstantsStatic, YogaConfig} from './yoga';
 export type * from './yoga';
 
-declare const mod: ConstantsStatic & {
-    Config: {
-        create: (buffer: BufferSource) => Promise<YogaConfig>;
-    };
-};
+export function createContext(wasm: BufferSource): Promise<YogaConfig>;
 
-export default mod;
+declare const Yoga: ConstantsStatic;
+export default Yoga;

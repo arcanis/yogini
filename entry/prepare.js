@@ -181,7 +181,7 @@ function patch(prototype, name, fn) {
   };
 }
 
-exports.prepare = (bind, lib) => {
+exports.prepare = lib => {
   for (let fnName of [
     'setPosition',
     'setMargin',
@@ -267,11 +267,5 @@ exports.prepare = (bind, lib) => {
     return original.call(this, width, height, direction);
   });
 
-  return {
-    Config: lib.Config,
-    Node: lib.Node,
-    Layout: bind('Layout', Layout),
-    Size: bind('Size', Size),
-    Value: bind('Value', Value),
-  };
+  return lib;
 }

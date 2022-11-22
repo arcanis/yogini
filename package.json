@@ -1,6 +1,6 @@
 {
   "name": "yogini",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "packageManager": "yarn@4.0.0-rc.30",
   "license": "MIT",
   "main": "./dist/async.js",
@@ -8,17 +8,14 @@
   "exports": {
     ".": "./entry/async.js",
     "./sync": "./entry/sync.js",
-    "./yoga.wasm": "./dist/yoga.wasm"
+    "./async": "./entry/async.js",
+    "./wasm": "./dist/yoga.wasm"
   },
   "devDependencies": {
-    "esbuild": "^0.14.18",
-    "esbuild-plugin-flow": "^0.3.2"
+    "fast-glob": "^3.2.12"
   },
   "scripts": {
     "prepack": "node ./build.js"
-  },
-  "dependencies": {
-    "fast-glob": "^3.2.12"
   },
   "files": [
     "dist",
