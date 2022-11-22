@@ -40,11 +40,12 @@ struct DirtiedCallbackWrapper : public emscripten::wrapper<DirtiedCallback>
   }
 };
 
-class Node {
-public:
-  static Node* createDefault(void);
-  static Node* createWithConfig(Config* config);
+class Config;
 
+class Node {
+  friend class Config;
+
+public:
   static void destroy(Node* node);
 
 public:
@@ -60,6 +61,9 @@ public: // Prevent accidental copy
   Node(Node const&) = delete;
 
   Node const& operator=(Node const&) = delete;
+
+public:
+  Config* getConfig(void) const;
 
 public:
   void reset(void);
@@ -173,11 +177,7 @@ public: // Measure func mutators
   void unsetMeasureFunc(void);
 
 public: // Measure func inspectors
-  YGSize callMeasureFunc(
-      double width,
-      YGMeasureMode widthMode,
-      double height,
-      YGMeasureMode heightMode) const;
+  YGSize callMeasureFunc(double width, YGMeasureMode widthMode, double height, YGMeasureMode heightMode) const;
 
 public: // Dirtied func mutators
   void setDirtiedFunc(DirtiedCallback *dirtiedFunc);

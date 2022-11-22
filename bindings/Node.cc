@@ -6,12 +6,7 @@
 #include "./Layout.hh"
 #include "./Config.hh"
 
-static YGSize globalMeasureFunc(
-    YGNodeRef nodeRef,
-    float width,
-    YGMeasureMode widthMode,
-    float height,
-    YGMeasureMode heightMode) {
+static YGSize globalMeasureFunc(YGNodeRef nodeRef, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode) {
   Node const& node = *reinterpret_cast<Node const*>(YGNodeGetContext(nodeRef));
 
   return node.callMeasureFunc(width, widthMode, height, heightMode);
@@ -23,28 +18,14 @@ static void globalDirtiedFunc(YGNodeRef nodeRef) {
   node.callDirtiedFunc();
 }
 
-/* static */ Node* Node::createDefault(void) {
-  return new Node(nullptr);
-}
-
-/* static */ Node* Node::createWithConfig(Config* config) {
-  return new Node(config);
-}
-
-/* static */ void Node::destroy(Node* node) {
-  delete node;
-}
-
 /* static */ Node* Node::fromYGNode(YGNodeRef nodeRef) {
   return reinterpret_cast<Node*>(YGNodeGetContext(nodeRef));
 }
 
 Node::Node(Config* config)
-    : m_node(
-          config != nullptr ? YGNodeNewWithConfig(config->m_config)
-                            : YGNodeNew()),
-      m_measureFunc(nullptr),
-      m_dirtiedFunc(nullptr) {
+    : m_node(YGNodeNewWithConfig(config->m_config))
+    , m_measureFunc(nullptr)
+    , m_dirtiedFunc(nullptr) {
   YGNodeSetContext(m_node, reinterpret_cast<void*>(this));
 }
 
@@ -88,8 +69,7 @@ void Node::setAlignSelf(int alignSelf) {
 }
 
 void Node::setFlexDirection(int flexDirection) {
-  YGNodeStyleSetFlexDirection(
-      m_node, static_cast<YGFlexDirection>(flexDirection));
+  YGNodeStyleSetFlexDirection(m_node, static_cast<YGFlexDirection>(flexDirection));
 }
 
 void Node::setFlexWrap(int flexWrap) {
@@ -354,11 +334,7 @@ void Node::unsetMeasureFunc(void) {
   YGNodeSetMeasureFunc(m_node, nullptr);
 }
 
-YGSize Node::callMeasureFunc(
-    double width,
-    YGMeasureMode widthMode,
-    double height,
-    YGMeasureMode heightMode) const {
+YGSize Node::callMeasureFunc(double width, YGMeasureMode widthMode, double height, YGMeasureMode heightMode) const {
   return m_measureFunc->measure(width, widthMode, height, heightMode);
 }
 
@@ -387,8 +363,7 @@ bool Node::isDirty(void) const {
 }
 
 void Node::calculateLayout(double width, double height, int direction) {
-  YGNodeCalculateLayout(
-      m_node, width, height, static_cast<YGDirection>(direction));
+  YGNodeCalculateLayout(m_node, width, height, static_cast<YGDirection>(direction));
 }
 
 double Node::getComputedLeft(void) const {

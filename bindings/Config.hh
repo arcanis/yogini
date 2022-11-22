@@ -2,8 +2,9 @@
 
 #include <yoga/Yoga.h>
 
-class Config {
+class Node;
 
+class Config {
   friend class Node;
 
 public:
@@ -28,6 +29,10 @@ public: // Setters
 
 public: // Getters
   bool isExperimentalFeatureEnabled(int feature) const;
+
+public:
+  Node* createNode(void);
+  void deleteNode(Node* node);
 
 private:
   YGConfigRef m_config;

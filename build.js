@@ -15,9 +15,6 @@ async function start(async) {
     ? `async`
     : `sync`;
 
-  await fs.promises.mkdir(`tmp`, {recursive: true});
-  await fs.promises.mkdir(`dist`, {recursive: true});
-
   await execFileP(`emcc`, [
     ...await yogaSources,
     ...await bindingSources,
@@ -36,27 +33,10 @@ async function start(async) {
 	  `-s`, `ERROR_ON_UNDEFINED_SYMBOLS=0`,
 	  `-s`, `FILESYSTEM=0`,
 	  `-s`, `MALLOC="emmalloc"`,
-	  `-s`, `INCOMING_MODULE_JS_API=['instantiateWasm','locateFile']`,
+	  `-s`, `INCOMING_MODULE_JS_API=['wasmBinary']`,
 	  `-s`, `EXPORT_NAME="yoga"`,
-	  `-o`, `tmp/yoga-${type}.js`,
+	  `-o`, `dist/yoga-${type}.js`,
   ]);
-
-  await build({
-    bundle: true,
-    sourcemap: false,
-    format: `cjs`,
-    target: `esnext`,
-    platform: `node`,
-    loader: {[`.js`]: `ts`},
-    entryPoints: [`./${type}.js`],
-    outfile: `./dist/${type}.js`,
-    plugins: [flow(/\.js$/, true)],
-  });
-
-  await fs.promises.copyFile(
-    `./${type}.d.ts`,
-    `./dist/${type}.d.ts`,
-  );
 }
 
 async function main() {
@@ -69,8 +49,8 @@ async function main() {
     syncBuffer,
     asyncBuffer,
   ] = await Promise.all([
-    fs.promises.readFile(`tmp/yoga-sync.wasm`),
-    fs.promises.readFile(`tmp/yoga-async.wasm`),
+    fs.promises.readFile(`dist/yoga-sync.wasm`),
+    fs.promises.readFile(`dist/yoga-async.wasm`),
   ]);
 
   if (Buffer.compare(syncBuffer, asyncBuffer) !== 0)
@@ -80,6 +60,11 @@ async function main() {
     `./tmp/yoga-sync.wasm`,
     `./dist/yoga.wasm`,
   );
+
+  await Promise.all([
+    await fs.promises.rm(`dist/yoga-sync.wasm`),
+    await fs.promises.rm(`dist/yoga-async.wasm`),
+  ]);
 }
 
 main();
